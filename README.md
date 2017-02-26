@@ -1,2 +1,2 @@
 # datetowords
-Translate a digitar representation of date to russian words
+Translate a digital representation of date to russian words
