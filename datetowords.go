@@ -3,7 +3,6 @@ package datetowords
 import (
 	"regexp"
 	"strings"
-	//	"fmt"
 	"strconv"
 )
 
@@ -14,7 +13,8 @@ func DateToString(d string) (res string) {
 	reDate := regexp.MustCompile(`^(\d{1,2})[,|\.|\\|\-|/]{1}(\d{1,2})[,|\.|\\|\-|/]{1}(\d{2}|\d{4})$`)
 
 	if reDate.MatchString(d) == false {
-		return "ОШИБКА, НА ВВОДЕ НЕ ДАТА: " + d
+		// empty return on error
+		return
 	}
 
 	s := reDate.FindStringSubmatch(d)
@@ -27,7 +27,7 @@ func DateToString(d string) (res string) {
 		day = dates[s[1]].d
 		}
 	} else {
-		//		return fmt.Sprintf("ОШИБКА: день вне диапазона: %d", i)
+		// empty return on error
 		return
 	}
 
@@ -40,10 +40,11 @@ func DateToString(d string) (res string) {
 
 		}
 	} else {
-		//		return fmt.Sprintf("ОШИБКА: месяц вне диапазона: %d", i)
+		// empty return on error
 		return
 	}
 
+	// год
 	i, err := strconv.Atoi(s[3])
 	if err == nil {
 		if i > 0 && i <= 99 {
