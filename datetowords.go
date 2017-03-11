@@ -1,38 +1,41 @@
 package datetowords
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 	"strconv"
 )
 
-func DateToString(d string) (res string) {
+var ReDate = regexp.MustCompile(`^(\d{1,2})[,|\.|\\|\-|/]{1}(\d{1,2})[,|\.|\\|\-|/]{1}(\d{2}|\d{4})$`)
+
+func DateToString(d string) (res string, err error) {
 
 	var day, month, year string
-
-	reDate := regexp.MustCompile(`^(\d{1,2})[,|\.|\\|\-|/]{1}(\d{1,2})[,|\.|\\|\-|/]{1}(\d{2}|\d{4})$`)
-
-	if reDate.MatchString(d) == false {
-		// empty return on error
-		return
+        
+	if ReDate.MatchString(d) == false {
+		return "", fmt.Errorf("Date pattern didn't match")
 	}
 
-	s := reDate.FindStringSubmatch(d)
+	s := ReDate.FindStringSubmatch(d)
 
 	// день
-	if i, err := strconv.Atoi(s[1]); err == nil && i > 0 && i <= 31 {
+	if i, err := strconv.Atoi(s[1]); err != nil {
+		return "", err
+	}  else if i > 0 && i <= 31 {
 		if len(s[1]) < 2 {
 		day = dates["0"+s[1]].d
 		} else {
 		day = dates[s[1]].d
 		}
 	} else {
-		// empty return on error
-		return
+		return "", fmt.Errorf("Day didn't match %d", i)
 	}
 
 	// месяц
-	if i, err := strconv.Atoi(s[2]); err == nil && i > 0 && i <= 12 {
+	if i, err := strconv.Atoi(s[2]); err != nil {
+		return "", err
+	} else if i > 0 && i <= 12 {
 		if len(s[2]) == 1 {
 			month = dates["m0"+s[2]].d
 		} else {
@@ -40,12 +43,11 @@ func DateToString(d string) (res string) {
 
 		}
 	} else {
-		// empty return on error
-		return
+		return "", fmt.Errorf("Month didn't match %d", i)
 	}
 
 	// год
-	i, err := strconv.Atoi(s[3])
+	i, err := strconv.Atoi(s[3]);
 	if err == nil {
 		if i > 0 && i <= 99 {
 			if i <= 99 && i >= 40 {
@@ -76,8 +78,7 @@ func DateToString(d string) (res string) {
 		year = ""
 	}
 
-	return day + " " + month + " " + year
-
+	return day + " " + month + " " + year, nil
 }
 
 type dateTypes struct {
