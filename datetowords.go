@@ -49,7 +49,7 @@ func DateToString(d string) (res string, err error) {
 	// год
 	i, err := strconv.Atoi(s[3]);
 	if err == nil {
-		if i > 0 && i <= 99 {
+		if len(s[3]) == 2 && i > 0 && i <= 99 {
 			if i <= 99 && i >= 40 {
 				year = "одна тысяча девятьсот " + dates[s[3]].y + " года"
 			} else if i >= 0 && i < 40 {
