@@ -3,8 +3,8 @@ package datetowords
 import (
 	"fmt"
 	"regexp"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 var ReDate = regexp.MustCompile(`^(\d{1,2})[,|\.|\\|\-|/]{1}(\d{1,2})[,|\.|\\|\-|/]{1}(\d{2}|\d{4})$`)
@@ -12,7 +12,7 @@ var ReDate = regexp.MustCompile(`^(\d{1,2})[,|\.|\\|\-|/]{1}(\d{1,2})[,|\.|\\|\-
 func DateToString(d string) (res string, err error) {
 
 	var day, month, year string
-        
+
 	if ReDate.MatchString(d) == false {
 		return "", fmt.Errorf("Date pattern didn't match")
 	}
@@ -22,11 +22,11 @@ func DateToString(d string) (res string, err error) {
 	// день
 	if i, err := strconv.Atoi(s[1]); err != nil {
 		return "", err
-	}  else if i > 0 && i <= 31 {
+	} else if i > 0 && i <= 31 {
 		if len(s[1]) < 2 {
-		day = dates["0"+s[1]].d
+			day = dates["0"+s[1]].d
 		} else {
-		day = dates[s[1]].d
+			day = dates[s[1]].d
 		}
 	} else {
 		return "", fmt.Errorf("Day didn't match %d", i)
@@ -47,7 +47,7 @@ func DateToString(d string) (res string, err error) {
 	}
 
 	// год
-	i, err := strconv.Atoi(s[3]);
+	i, err := strconv.Atoi(s[3])
 	if err == nil {
 		if len(s[3]) == 2 && i > 0 && i <= 99 {
 			if i <= 99 && i >= 40 {
@@ -58,17 +58,16 @@ func DateToString(d string) (res string, err error) {
 		} else if i >= 1000 && i <= 2999 {
 			y := strings.Split(s[3], "")
 
-			if i % 1000 == 0 {
+			if i%1000 == 0 {
 				year = dates[y[0]].d
-			} else if i % 100 == 0 {
+			} else if i%100 == 0 {
 				year = dates[y[0]].y + " "
-				year += dates[(y[1]+"00")].d
+				year += dates[(y[1] + "00")].d
 			} else {
 				year = dates[y[0]].y + " "
 				year += dates[(y[1]+"00")].y + " "
 				year += dates[y[2]+y[3]].y
 			}
-			
 
 			year += " года"
 		} else {
