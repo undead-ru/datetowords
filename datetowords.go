@@ -7,14 +7,16 @@ import (
 	"strings"
 )
 
+// ReDate регулярное выражение для разбора входящей строки содержащей дату
 var ReDate = regexp.MustCompile(`^(\d{1,2})[,|\.|\\|\-|/]{1}(\d{1,2})[,|\.|\\|\-|/]{1}(\d{2}|\d{4})$`)
 
+// DateToString переводит дату в цифровом формате в текстовый
 func DateToString(d string) (res string, err error) {
 
 	var day, month, year string
 
 	if ReDate.MatchString(d) == false {
-		return "", fmt.Errorf("Date pattern didn't match")
+		return "", fmt.Errorf("date pattern didn't match: %v", res)
 	}
 
 	s := ReDate.FindStringSubmatch(d)
@@ -29,7 +31,7 @@ func DateToString(d string) (res string, err error) {
 			day = dates[s[1]].d
 		}
 	} else {
-		return "", fmt.Errorf("Day didn't match %d", i)
+		return "", fmt.Errorf("day didn't match %d", i)
 	}
 
 	// месяц
@@ -43,7 +45,7 @@ func DateToString(d string) (res string, err error) {
 
 		}
 	} else {
-		return "", fmt.Errorf("Month didn't match %d", i)
+		return "", fmt.Errorf("month didn't match %d", i)
 	}
 
 	// год
