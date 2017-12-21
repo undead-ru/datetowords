@@ -10,7 +10,7 @@ import (
 // ReDate регулярное выражение для разбора входящей строки содержащей дату
 var ReDate = regexp.MustCompile(`^(\d{1,2})[,|\.|\\|\-|/]{1}(\d{1,2})[,|\.|\\|\-|/]{1}(\d{2}|\d{4})$`)
 
-// DateToString переводит дату в цифровом формате в текстовый
+// DateToString переводит строку с датой в цифровом формате в текстовый формат
 func DateToString(d string) (res string, err error) {
 
 	var day, month, year string
